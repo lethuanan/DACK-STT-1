@@ -1,0 +1,616 @@
+{
+	"info": {
+		"_postman_id": "b5cccbb9-02eb-4bcb-b4e9-1d63b1187d4d",
+		"name": "DACK-STT1 GearVN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20792850"
+	},
+	"item": [
+		{
+			"name": "Login and Register",
+			"item": [
+				{
+					"name": "Đăng Ký",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Set accessToken into collection variable', () => {\r",
+									"    var res = pm.response.json();\r",
+									"\r",
+									"    var firstname = res.data.firstname;\r",
+									"    var lastname = res.data.lastname\r",
+									"    var email = res.data.email;\r",
+									"    var phone = res.data.phone;\r",
+									"    var password = res.data.password;\r",
+									"    //pm.collectionVariables.set('token', token);\r",
+									"    pm.collectionVariables.set('email', email);\r",
+									"    pm.collectionVariables.set('password', password);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Le\",\r\n    \"lastname\": \"An\",\r\n    \"email\":\"lethuanan2@gmail.com\",\r\n    \"phone\": \"0562492885\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Đăng Nhập",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Set accessToken into collection variable', () => {\r",
+									"    var token = pm.response.json().data.access_token;\r",
+									"    console.log(token);\r",
+									"\r",
+									"    var email = res.data.email;\r",
+									"    pm.collectionVariables.set('email', email);\r",
+									"    pm.collectionVariables.set('access_token', token);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"chile12@gmail.com\",\r\n    \"password\":\"chile12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem tất cả users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tìm user với email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/users/:email",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "{{email}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xoá user với email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/users/:email",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "lethuanan2@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sản Phẩm",
+			"item": [
+				{
+					"name": "Xem Sản Phẩm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"List of books request status\", ()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const response = pm.response.json();\r",
+									"// Only for debug\r",
+									"var productIds = _.map(pm.response.json(), 'id');\r",
+									"console.log(productIds);\r",
+									"pm.globals.set(\"productIds\", productIds);\r",
+									"for (let productId of productIds) {  \r",
+									"    console.log(productId);  \r",
+									"}\r",
+									"const randomProductId = Math.floor(Math.random() * productIds.length);\r",
+									"console.log(randomProductId, productIds[randomProductId]);\r",
+									"pm.collectionVariables.set(\"productId\",productIds[randomProductId]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem 1 sản phẩm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/product/:productId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xoá Sản Phẩm",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/product/:productId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm sản phẩm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Nvdia\",\r\n    \"price\": \"200000\",\r\n    \"available\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Thêm Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.collectionVariables.set(\"orderId\", pm.response.json().data.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": {{productId}},\r\n    \"customerName\": \"{{$randomUserName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem order với ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/orders/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem tất cả Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xoá Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/auth/orders/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "firstname",
+			"value": ""
+		},
+		{
+			"key": "lastname",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "phone",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "productId",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		}
+	]
+}
